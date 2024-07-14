@@ -1,0 +1,5 @@
+jwt:
+  issuer: simple
+  access-expires-seconds: 3600
+  refresh-expires-seconds: 3600
+  secret-key: mytestsecretkeyforstudyiwillsupersoftwareenginneringthisworld
