@@ -1,4 +1,4 @@
-package com.simple.study.member
+package com.simple.study.member.service
 
 import com.simple.study.domain.member.domain.storage.jpa.MemberRepository
 import org.springframework.security.crypto.password.PasswordEncoder

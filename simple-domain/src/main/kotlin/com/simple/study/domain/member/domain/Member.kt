@@ -7,15 +7,26 @@ import jakarta.persistence.*
 @Entity
 class Member(
 
+    @Column(nullable = false, length = 30, updatable = false)
+    val userId: String,
+
     @Column(nullable = false, scale = 20, unique = true)
-    val account: String,
+    val email: String,
 
     @Column(nullable = false)
     var password: String,
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 30)
     var nickname: String,
-) : BaseEntity() {
+
+    @Column(nullable = false, length = 20)
+    var name: String,
+
+    @Enumerated(value = EnumType.STRING)
+    @Column(nullable = false)
+    var gender: Gender? = Gender.MALE,
+
+    ) : BaseEntity() {
 
 
     @OneToMany(mappedBy = "member", cascade = [CascadeType.ALL], orphanRemoval = true)
@@ -29,20 +40,27 @@ class Member(
     fun addSocial(socialId: String, socialType: SocialType) {
         this.socials.add(Social.of(member = this, socialId = socialId, socialType = socialType))
     }
+
     companion object {
 
         fun newInstance(
-            account: String,
+            userId: String,
+            email: String,
             socialType: SocialType,
             password: String,
             nickname: String,
-        ) :Member {
+            name: String,
+            gender: Gender,
+        ): Member {
             val member = Member(
-            account = account,
-            password = password,
-            nickname = nickname,
+                userId = userId,
+                email = email,
+                password = password,
+                nickname = nickname,
+                name = name,
+                gender = gender
             )
-            member.addSocial(account, socialType)
+            member.addSocial(email, socialType)
 
             return member
         }

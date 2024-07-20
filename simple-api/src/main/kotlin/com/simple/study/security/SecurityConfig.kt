@@ -1,4 +1,4 @@
-package com.simple.study.config.security
+package com.simple.study.security
 
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest
 import org.springframework.context.annotation.Bean
