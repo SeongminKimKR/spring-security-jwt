@@ -2,6 +2,7 @@ package com.simple.study.auth.service
 
 import com.simple.study.auth.dto.request.AuthRequest
 import com.simple.study.auth.dto.request.CommonSignUpRequest
+import com.simple.study.auth.dto.request.SignUpRequest
 import com.simple.study.auth.dto.response.SignInResponse
 import com.simple.study.auth.dto.response.SignUpResponse
 import com.simple.study.domain.member.domain.Member
@@ -37,7 +38,9 @@ class CommonAuthService(
         return SignInResponse(member.id, token.accessToken,token.refreshToken)
     }
 
-    fun signUp(request: CommonSignUpRequest): SignUpResponse {
+    override fun signUp(request: SignUpRequest): SignUpResponse {
+        require(request is CommonSignUpRequest)
+
         val member = Member.newInstance(
             userId = request.userId,
             email = request.email,

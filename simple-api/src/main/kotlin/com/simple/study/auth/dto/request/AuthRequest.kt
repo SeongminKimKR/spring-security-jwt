@@ -5,9 +5,11 @@ import com.simple.study.domain.member.domain.SocialType
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 
+abstract class SignUpRequest(
+    open val socialType: SocialType
+)
 data class CommonSignUpRequest(
-    @NotBlank
-    val socialType: SocialType,
+    override val socialType: SocialType = SocialType.NONE,
     @NotBlank
     val userId: String,
     @NotBlank
@@ -20,7 +22,13 @@ data class CommonSignUpRequest(
     val name: String,
     @NotNull
     val gender: Gender
-    )
+    ) : SignUpRequest(socialType)
+
+data class SocialAuthRequest(
+    override val socialType: SocialType = SocialType.NONE,
+    @NotBlank
+    val socialId: String,
+) : SignUpRequest(socialType)
 
 data class AuthRequest(
     @NotBlank
@@ -31,8 +39,3 @@ data class AuthRequest(
     val password: String,
     )
 
-data class SocialAuthRequest(
-
-    @NotBlank
-    val socialId: String,
-)
