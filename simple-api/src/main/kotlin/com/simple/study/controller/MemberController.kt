@@ -1,4 +1,4 @@
-package com.simple.study.member.controller
+package com.simple.study.controller
 
 import com.simple.study.member.service.MemberService
 import io.swagger.v3.oas.annotations.tags.Tag

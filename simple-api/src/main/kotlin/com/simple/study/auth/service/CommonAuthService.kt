@@ -3,15 +3,21 @@ package com.simple.study.auth.service
 import com.simple.study.auth.dto.request.AuthRequest
 import com.simple.study.auth.dto.request.CommonSignUpRequest
 import com.simple.study.auth.dto.response.SignInResponse
+import com.simple.study.auth.dto.response.SignUpResponse
 import com.simple.study.domain.member.domain.Member
 import com.simple.study.domain.member.domain.storage.jpa.MemberRepository
 import com.simple.study.jwt.TokenProvider
+import com.simple.study.redis.repository.RefreshTokenRepository
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 
 @Service
 class CommonAuthService(
     private val memberRepository: MemberRepository,
+    private val refreshTokenRepository: RefreshTokenRepository,
+    private val authenticationManagerBuilder: AuthenticationManagerBuilder,
     private val passwordEncoder: PasswordEncoder,
     private val tokenProvider: TokenProvider,
 ) : AuthService {
@@ -22,12 +28,16 @@ class CommonAuthService(
         requireNotNull(member) { "존재하지 않는 계정입니다." }
         require(member.password == passwordEncoder.encode(request.password)) {"아이디 또는 패스워드가 일치하지 않습니다."}
 
-        val token = tokenProvider.createToken("{$member.id}:${request.socialType}")
+        val authenticationToken = UsernamePasswordAuthenticationToken(request.userId, request.password)
+        val authentication = authenticationManagerBuilder.`object`.authenticate(authenticationToken)
+        val token = tokenProvider.createToken(authentication)
 
-        return SignInResponse(member.id, token)
+        refreshTokenRepository.save(token.refreshToken, request.userId)
+
+        return SignInResponse(member.id, token.accessToken,token.refreshToken)
     }
 
-    fun signUp(request: CommonSignUpRequest): SignInResponse {
+    fun signUp(request: CommonSignUpRequest): SignUpResponse {
         val member = Member.newInstance(
             userId = request.userId,
             email = request.email,
@@ -40,8 +50,6 @@ class CommonAuthService(
 
         memberRepository.save(member)
 
-        val token = tokenProvider.createToken("{$member.id}:${request.socialType}")
-
-        return SignInResponse(member.id, token)
+        return SignUpResponse(member.id)
     }
 }

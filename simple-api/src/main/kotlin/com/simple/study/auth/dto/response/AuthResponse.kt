@@ -5,3 +5,7 @@ data class SignInResponse (
         val accessToken: String,
         val refreshToken: String
         )
+
+data class SignUpResponse (
+        val memberId: Long,
+)
