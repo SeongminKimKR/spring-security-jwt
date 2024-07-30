@@ -19,4 +19,10 @@ dependencies {
 
     //lettuce
     implementation("io.lettuce:lettuce-core:6.3.2.RELEASE")
+
+    //mail
+    implementation("org.springframework.boot:spring-boot-starter-mail:3.3.0")
+
+    //properties
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 }

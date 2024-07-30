@@ -4,7 +4,6 @@ import com.simple.study.member.service.CustomUserDetail
 import io.jsonwebtoken.*
 import io.jsonwebtoken.io.Decoders
 import io.jsonwebtoken.security.Keys
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.GrantedAuthority
@@ -16,16 +15,13 @@ import javax.crypto.SecretKey
 
 @Service
 class TokenProvider(
-    @Value("\${jwt.access-key}")
-    private val accessSecretKey: String,
-    @Value("\${jwt.refresh-key}")
-    private val refreshSecretKey: String,
-    @Value("\${jwt.access-expires-seconds}")
-    private val accessExpiresSeconds: Long,
-    @Value("\${jwt.refresh-expires-seconds}")
-    private val refreshExpiresSeconds: Long,
+    private val jwtProperties: JwtProperties,
+) {
 
-    ) {
+    private val accessSecretKey = jwtProperties.accessSecretKey
+    private val refreshSecretKey = jwtProperties.refreshSecretKey
+    private val accessExpiresSeconds = jwtProperties.accessExpiresSeconds
+    private val refreshExpiresSeconds = jwtProperties.refreshExpiresSeconds
 
     private val accessKey by lazy { Keys.hmacShaKeyFor(Decoders.BASE64.decode(accessSecretKey)) }
     private val refreshKey by lazy { Keys.hmacShaKeyFor(Decoders.BASE64.decode(refreshSecretKey)) }

@@ -38,4 +38,3 @@ data class AuthRequest(
     @NotBlank
     val password: String,
     )
-

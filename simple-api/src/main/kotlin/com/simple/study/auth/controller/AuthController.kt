@@ -6,7 +6,6 @@ import com.simple.study.auth.dto.response.SignInResponse
 import com.simple.study.auth.dto.response.SignUpResponse
 import com.simple.study.auth.service.AuthServiceFinder
 import com.simple.study.member.service.CustomUserDetail
-import com.simple.study.member.service.MemberService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
