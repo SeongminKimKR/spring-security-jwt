@@ -8,6 +8,7 @@ import com.simple.study.auth.dto.response.SignUpResponse
 import com.simple.study.domain.member.domain.Member
 import com.simple.study.domain.member.domain.storage.jpa.MemberRepository
 import com.simple.study.jwt.TokenProvider
+import com.simple.study.mail.service.MailService
 import com.simple.study.redis.repository.RefreshTokenRepository
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class CommonAuthService(
+    private val mailService: MailService,
     private val memberRepository: MemberRepository,
     private val refreshTokenRepository: RefreshTokenRepository,
     private val authenticationManagerBuilder: AuthenticationManagerBuilder,
@@ -39,7 +41,9 @@ class CommonAuthService(
     }
 
     override fun signUp(request: SignUpRequest): SignUpResponse {
-        require(request is CommonSignUpRequest)
+        require(request is CommonSignUpRequest) {"올바른 형태의 가입 신청이 아닙니다. ${request.socialType}"}
+
+        require(mailService.isCompletedVerification(request.emailVerificationToken)) {"이메일 인증이 완료되지 않았습니다."}
 
         val member = Member.newInstance(
             userId = request.userId,

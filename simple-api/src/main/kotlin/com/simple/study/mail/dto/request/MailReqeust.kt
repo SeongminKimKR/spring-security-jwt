@@ -14,5 +14,11 @@ data class CheckEmailForSignUpRequest(
     val token:String,
 
     @NotBlank
-    val number:String,
+    val code:String,
+)
+
+data class SendMailRequest(
+    val subject: String,
+    val email: String,
+    val body: String
 )

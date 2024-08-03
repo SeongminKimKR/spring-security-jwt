@@ -12,6 +12,7 @@ data class MailProperties @ConstructorBinding constructor(
     val properties: PropertiesDetails,
     val authCodeExpirationMillis: Long
 ) {
+
     data class PropertiesDetails (
         val mail: MailPropertiesDetail
     ) {

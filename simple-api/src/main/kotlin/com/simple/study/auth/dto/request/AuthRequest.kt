@@ -21,7 +21,9 @@ data class CommonSignUpRequest(
     @NotBlank
     val name: String,
     @NotNull
-    val gender: Gender
+    val gender: Gender,
+    @NotBlank
+    val emailVerificationToken: String,
     ) : SignUpRequest(socialType)
 
 data class SocialAuthRequest(
