@@ -1,5 +1,0 @@
-jwt:
-  access-expires-seconds: 3600
-  refresh-expires-seconds: 3600
-  access-secret-key: MyTestAccessKeyMyTestAccessKeyMyTestAccessKeyMyTestAccessKey
-  refresh-secret-key: MyTestRefreshKeyMyTestRefreshKeyMyTestRefreshKeyMyTestRefreshKey
