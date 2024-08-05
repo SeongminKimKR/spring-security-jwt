@@ -100,9 +100,10 @@ class MailService(
                 setFrom(InternetAddress(mailProperties.username, MAIL_SENDER_NAME))
                 setText(mailDetail.body, true)
             }
-
         mailSender.send(message)
-    }.isSuccess
+    }.onFailure {
+        throw it
+    }
 
 
     private fun checkDuplicateEmail(email: String) {
