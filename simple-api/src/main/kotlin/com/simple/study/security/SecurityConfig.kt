@@ -2,7 +2,6 @@ package com.simple.study.security
 
 import com.simple.study.jwt.TokenProvider
 import com.simple.study.security.filter.JwtAuthenticationFilter
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -16,7 +15,7 @@ class SecurityConfig(
     private val jwtTokenProvider: TokenProvider,
 ) {
 
-    private val allowedUrls = arrayOf("/", "/swagger-ui/**", "/v3/**", "/common-signup")
+    private val allowedUrls = arrayOf("/","/h2-console/**", "/swagger-ui/**", "/v3/**", "/common-signup","/mail/**")
 
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain = http
@@ -33,7 +32,6 @@ class SecurityConfig(
         }
         .authorizeHttpRequests {
             it.requestMatchers(*allowedUrls).permitAll()
-                .requestMatchers(PathRequest.toH2Console()).permitAll()
                 .anyRequest().authenticated()
         }
         .addFilterBefore(

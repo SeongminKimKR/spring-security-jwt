@@ -57,7 +57,7 @@ class MailService(
             body = body
         )
 
-        require(sendMail(mail))
+        sendMail(mail)
 
         val emailVerificationDto = EmailVerificationDto(
             email = request.email,
@@ -96,9 +96,9 @@ class MailService(
         val helper = MimeMessageHelper(message, true, "UTF-8")
             .apply {
                 setSubject(mailDetail.subject)
-                setTo(mailDetail.subject)
+                setTo(mailDetail.email)
                 setFrom(InternetAddress(mailProperties.username, MAIL_SENDER_NAME))
-                setText(mailDetail.body)
+                setText(mailDetail.body, true)
             }
 
         mailSender.send(message)

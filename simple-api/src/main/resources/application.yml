@@ -5,6 +5,8 @@ spring.config:
     - classpath:/application-domain.yml
 
 spring:
+  profiles:
+    active: secrets
   data:
     redis:
       host: localhost
