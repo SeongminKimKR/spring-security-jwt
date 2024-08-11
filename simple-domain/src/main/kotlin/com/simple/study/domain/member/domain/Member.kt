@@ -26,6 +26,10 @@ class Member(
     @Column(nullable = false)
     var gender: Gender? = Gender.MALE,
 
+    @Enumerated(value = EnumType.STRING)
+    @Column(nullable = false)
+    var role: Role? = Role.MEMBER,
+
     ) : BaseEntity() {
 
 
@@ -51,6 +55,7 @@ class Member(
             nickname: String,
             name: String,
             gender: Gender,
+            role: Role
         ): Member {
             val member = Member(
                 userId = userId,
@@ -58,7 +63,8 @@ class Member(
                 password = password,
                 nickname = nickname,
                 name = name,
-                gender = gender
+                gender = gender,
+                role = role
             )
             member.addSocial(email, socialType)
 

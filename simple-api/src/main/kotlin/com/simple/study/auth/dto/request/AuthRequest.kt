@@ -1,6 +1,7 @@
 package com.simple.study.auth.dto.request
 
 import com.simple.study.domain.member.domain.Gender
+import com.simple.study.domain.member.domain.Role
 import com.simple.study.domain.member.domain.SocialType
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
@@ -24,6 +25,8 @@ data class CommonSignUpRequest(
     val gender: Gender,
     @NotBlank
     val emailVerificationToken: String,
+    @NotNull
+    val role: Role
     ) : SignUpRequest(socialType)
 
 data class SocialAuthRequest(

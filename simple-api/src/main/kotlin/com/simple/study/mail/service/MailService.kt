@@ -12,6 +12,9 @@ import com.simple.study.redis.repository.EmailVerificationRepository
 import com.simple.study.util.RandomUtil.getRandomNumber
 import com.simple.study.util.RandomUtil.getRandomString
 import jakarta.mail.internet.InternetAddress
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.MimeMessageHelper
 import org.springframework.stereotype.Service
@@ -40,7 +43,7 @@ class MailService(
 
     }
 
-    fun sendVerificationEmailForSignUp(request: VerifyEmailForSignUpRequest): VerifyEmailForSignUpResponse {
+    suspend fun sendVerificationEmailForSignUp(request: VerifyEmailForSignUpRequest): VerifyEmailForSignUpResponse {
         checkDuplicateEmail(request.email)
 
         val verificationToken = getRandomString(VERIFICATION_TOKEN_LENGTH)
@@ -57,7 +60,9 @@ class MailService(
             body = body
         )
 
-        sendMail(mail)
+        CoroutineScope(Dispatchers.IO).launch {
+            sendMail(mail)
+        }
 
         val emailVerificationDto = EmailVerificationDto(
             email = request.email,

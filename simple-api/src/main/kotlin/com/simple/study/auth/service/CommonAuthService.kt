@@ -52,7 +52,8 @@ class CommonAuthService(
             nickname = request.nickname,
             password = passwordEncoder.encode(request.password),
             gender = request.gender,
-            name = request.name
+            name = request.name,
+            role = request.role
         )
 
         memberRepository.save(member)

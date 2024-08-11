@@ -20,7 +20,7 @@ class MailController (
 
     @Operation(summary = "회원가입 과정에서 이메일 인증을 위한 인증번호 전송")
     @PostMapping("/mail/verify")
-    fun verifyEmailVerificationForSignUp(@Valid @RequestBody request: VerifyEmailForSignUpRequest): VerifyEmailForSignUpResponse {
+    suspend fun verifyEmailVerificationForSignUp(@Valid @RequestBody request: VerifyEmailForSignUpRequest): VerifyEmailForSignUpResponse {
         return mailService.sendVerificationEmailForSignUp(request)
     }
 
