@@ -6,6 +6,7 @@ import com.simple.study.auth.dto.request.SignUpRequest
 import com.simple.study.auth.dto.response.SignInResponse
 import com.simple.study.auth.dto.response.SignUpResponse
 import com.simple.study.domain.member.domain.Member
+import com.simple.study.domain.member.domain.Role
 import com.simple.study.domain.member.domain.storage.jpa.MemberRepository
 import com.simple.study.jwt.TokenProvider
 import com.simple.study.mail.service.MailService
@@ -53,7 +54,7 @@ class CommonAuthService(
             password = passwordEncoder.encode(request.password),
             gender = request.gender,
             name = request.name,
-            role = request.role
+            role = Role.MEMBER
         )
 
         memberRepository.save(member)

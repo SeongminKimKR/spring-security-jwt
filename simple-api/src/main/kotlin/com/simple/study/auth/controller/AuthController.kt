@@ -1,15 +1,13 @@
 package com.simple.study.auth.controller
 
 import com.simple.study.auth.dto.request.AuthRequest
-import com.simple.study.auth.dto.request.CommonSignUpRequest
+import com.simple.study.auth.dto.request.SignUpRequest
 import com.simple.study.auth.dto.response.SignInResponse
 import com.simple.study.auth.dto.response.SignUpResponse
 import com.simple.study.auth.service.AuthServiceFinder
-import com.simple.study.member.service.CustomUserDetail
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
@@ -29,7 +27,7 @@ class AuthController(
 
     @Operation(summary = "회원 회원가입")
     @PostMapping("/signup")
-    fun signUp(@Valid @RequestBody request: CommonSignUpRequest): SignUpResponse {
+    fun signUp(@Valid @RequestBody request: SignUpRequest): SignUpResponse {
         val authService = authServiceFinder.getService(request.socialType)
         return authService.signUp(request)
     }
@@ -40,8 +38,4 @@ class AuthController(
     fun logout() {
 
     }*/
-
-    private fun getMemberUserId(): String {
-        return (SecurityContextHolder.getContext().authentication.principal as CustomUserDetail).username
-    }
 }

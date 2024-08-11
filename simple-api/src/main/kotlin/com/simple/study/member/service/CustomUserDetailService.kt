@@ -8,12 +8,12 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.stereotype.Service
 
 @Service
-class CustomUserDetailService (
-    private val memberRepository: MemberRepository
-        ): UserDetailsService{
+class CustomUserDetailService(
+    private val memberRepository: MemberRepository,
+) : UserDetailsService {
     override fun loadUserByUsername(username: String?): UserDetails {
 
-        requireNotNull(username) { "username이 null입니다."}
+        requireNotNull(username) { "username이 null입니다." }
 
         val member = memberRepository.findByUserId(username)
 
@@ -22,12 +22,13 @@ class CustomUserDetailService (
         return member.convert()
     }
 
-    fun Member.convert (): UserDetails =
+    fun Member.convert(): UserDetails =
         CustomUserDetail(
             userId = userId,
             password = password,
             email = email,
             nickname = nickname,
-            authorities = mutableListOf(SimpleGrantedAuthority("ROLE_MEMBER"))
-        )
+            authorities = listOf(SimpleGrantedAuthority("ROLE_${role}")),
+
+            )
 }
