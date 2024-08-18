@@ -2,7 +2,8 @@ package com.simple.study.oauth2.userinfo
 
 class KakaoOAuth2UserInfo(
     attributes: Map<String, Any>,
-) : OAuth2BaseUserInfo(attributes) {
+    nameAttributeKey: String,
+) : OAuth2UserInfo(attributes, nameAttributeKey) {
     override val id: String
         get() {
             return attributes["response"] as String

@@ -16,7 +16,7 @@ class Member(
     @Column(nullable = false)
     var password: String,
 
-    @Column(nullable = false, length = 30)
+    @Column(nullable = false, length = 30, unique = true)
     var nickname: String,
 
     @Column(nullable = false, length = 20)
@@ -30,19 +30,15 @@ class Member(
     @Column(nullable = false)
     var role: Role? = Role.MEMBER,
 
+    @Enumerated(value = EnumType.STRING)
+    @Column(nullable = false)
+    var social: Social? = Social.NONE,
+
     ) : BaseEntity() {
-
-
-    @OneToMany(mappedBy = "member", cascade = [CascadeType.ALL], orphanRemoval = true)
-    val socials: MutableList<Social> = mutableListOf()
 
     fun update(nickname: String, password: String) {
         this.nickname = nickname
         this.password = password
-    }
-
-    fun addSocial(socialId: String, socialType: SocialType) {
-        this.socials.add(Social.of(member = this, socialId = socialId, socialType = socialType))
     }
 
     companion object {
@@ -50,25 +46,24 @@ class Member(
         fun newInstance(
             userId: String,
             email: String,
-            socialType: SocialType,
             password: String,
             nickname: String,
             name: String,
             gender: Gender,
-            role: Role
+            role: Role,
+            social: Social,
         ): Member {
-            val member = Member(
+
+            return Member(
                 userId = userId,
                 email = email,
                 password = password,
                 nickname = nickname,
                 name = name,
                 gender = gender,
-                role = role
+                role = role,
+                social = social,
             )
-            member.addSocial(email, socialType)
-
-            return member
         }
 
     }

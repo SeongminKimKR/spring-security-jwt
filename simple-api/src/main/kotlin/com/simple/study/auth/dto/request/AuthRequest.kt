@@ -2,7 +2,6 @@ package com.simple.study.auth.dto.request
 
 import com.simple.study.common.annotation.ValidEnum
 import com.simple.study.domain.member.domain.Gender
-import com.simple.study.domain.member.domain.SocialType
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
@@ -21,13 +20,7 @@ private const val NAME_MESSAGE = "영문, 한글만 가능하며, 1~20자리로 
 private const val BIRTH_DATE_MESSAGE = "날짜 형식(YYYY-MM-DD)을 확인해주세요."
 private const val GENDER_MESSAGE = "남자, 여자 중 하나를 선택해주세요."
 
-abstract class SignUpRequest(
-    open val socialType: SocialType
-)
 data class CommonSignUpRequest(
-
-    override val socialType: SocialType = SocialType.NONE,
-
     @field:NotBlank
     @field:Pattern(regexp = USER_ID_PATTERN, message = USER_ID_MESSAGE)
     val userId: String,
@@ -57,12 +50,11 @@ data class CommonSignUpRequest(
 
     @field:NotBlank
     val emailVerificationToken: String,
-    ) : SignUpRequest(socialType)
+    )
 
 data class Oauth2SignUpRequest(
-
     @field:NotBlank
-    override val socialType: SocialType,
+    val token: String,
 
     @field:NotBlank
     @field:Pattern(regexp = NICK_PATTERN, message = NICK_MESSAGE)
@@ -78,16 +70,17 @@ data class Oauth2SignUpRequest(
 
     @field:Pattern(regexp = BIRTH_DATE_PATTERN, message = BIRTH_DATE_MESSAGE)
     val birthDate: String?,
+)
 
-) : SignUpRequest(socialType)
-
-data class AuthRequest(
-    @field:NotBlank
-    val socialType: SocialType,
-
+data class CommonAuthRequest(
     @field:NotBlank
     val userId: String,
 
     @field:NotBlank
     val password: String,
-    )
+)
+
+data class OAuth2AuthRequest(
+    @field:NotBlank
+    val token: String
+)

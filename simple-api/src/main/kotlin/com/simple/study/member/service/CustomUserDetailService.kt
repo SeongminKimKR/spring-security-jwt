@@ -19,16 +19,15 @@ class CustomUserDetailService(
 
         requireNotNull(member)
 
-        return member.convert()
+        return member.toUserDetails()
     }
 
-    fun Member.convert(): UserDetails =
+    fun Member.toUserDetails(): UserDetails =
         CustomUserDetail(
             userId = userId,
             password = password,
             email = email,
             nickname = nickname,
-            authorities = listOf(SimpleGrantedAuthority("ROLE_${role}")),
-
+            authorities = listOf(SimpleGrantedAuthority("ROLE_${role}"))
             )
 }
