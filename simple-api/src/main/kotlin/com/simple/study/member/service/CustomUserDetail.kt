@@ -15,7 +15,7 @@ class CustomUserDetail(
 ) : UserDetails, OAuth2User {
     constructor(
         userId: String,
-        password: String,
+        password: String?,
         email: String,
         nickname: String,
         authorities: Collection<GrantedAuthority>,

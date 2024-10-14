@@ -65,15 +65,21 @@ class CustomOAuth2UserService(
         }
 
     private fun saveSocialMember(oAuthUserInfo: OAuth2UserInfo, social: Social): Member {
-        val member = memberRepository.findByEmail(oAuthUserInfo.email)
+        val findMember = memberRepository.findByEmail(oAuthUserInfo.email)
 
-        if (member != null) {
+        if (findMember != null) {
+            if(findMember.isSocialGuest) {
+                memberRepository.save(findMember)
 
+            }else {
+                memberRepository.deleteByEmail(oAuthUserInfo.email)
+                memberRepository.flush()
+            }
         }
 
         val createMember = oAuthUserInfo.toMember(social)
-
         memberRepository.save(createMember)
+
         return createMember
     }
 

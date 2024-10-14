@@ -1,7 +1,7 @@
 package com.simple.study.auth.dto.response
 
 data class SignInResponse(
-    val memberId: Long,
+    val userId: String,
     val accessToken: String,
     val refreshToken: String,
 )

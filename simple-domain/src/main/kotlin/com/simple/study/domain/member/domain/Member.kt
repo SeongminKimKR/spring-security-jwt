@@ -20,7 +20,7 @@ class Member(
     var nickname: String,
 
     @Column(nullable = false, length = 20)
-    var name: String,
+    var name: String?,
 
     @Enumerated(value = EnumType.STRING)
     @Column(nullable = false)
@@ -34,8 +34,16 @@ class Member(
     @Column(nullable = false)
     var social: Social? = Social.NONE,
 
+    @Column(nullable = false)
+    var isSocialGuest: Boolean = false,
+
     ) : BaseEntity() {
 
+    fun createMemberAfterAuthorizeSocial(nickname: String, name: String?, gender: Gender?) {
+        this.nickname = nickname
+        this.name = name
+        this.gender = gender
+    }
     fun update(nickname: String, password: String) {
         this.nickname = nickname
         this.password = password

@@ -1,5 +1,6 @@
 package com.simple.study.jwt
 
+import com.simple.study.domain.member.domain.Member
 import com.simple.study.member.service.CustomUserDetail
 import io.jsonwebtoken.*
 import io.jsonwebtoken.io.Decoders
@@ -39,6 +40,16 @@ class TokenProvider(
         return TokenInfo(userDetail.username, "Bearer", accessToken, refreshToken)
     }
 
+    fun createTokenForOAuth2(member: Member): TokenInfo {
+        val authorities = "ROLE_${member.role.toString()}"
+
+        val accessToken =
+            createJwtToken(member.userId, member.email, member.nickname, authorities, accessKey)
+        val refreshToken =
+            createJwtToken(member.userId, member.email, member.nickname, authorities, refreshKey)
+
+        return TokenInfo(member.userId, "Bearer", accessToken, refreshToken)
+    }
 
     fun validateAccessToken(token: String) = runCatching {
         getClaims(token, accessKey) }
@@ -86,7 +97,7 @@ class TokenProvider(
             .split(",")
             .map { SimpleGrantedAuthority(it) }
 
-        val principal = CustomUserDetail(claims.subject, null, authorities, email as String, nickname as String)
+        val principal = CustomUserDetail(claims.subject, null, email as String, nickname as String, authorities)
 
         return UsernamePasswordAuthenticationToken(principal, "", authorities)
     }
